@@ -14,8 +14,9 @@ from roamer import record
 from roamer.database import db_init
 
 class Session(object):
-    def __init__(self, cwd=None):
+    def __init__(self, cwd=None, skipapproval=True):
         self.cwd = cwd
+        self.skipapproval = skipapproval
         if cwd is None:
             self.cwd = os.getcwd()
         db_init()
@@ -33,7 +34,9 @@ class Session(object):
         engine = Engine(self.directory, self.edit_directory)
         engine.compile_commands()
         print(engine.commands_to_str())
-        answer = input('Please indicate approval: [y/n] ')
+        answer = 'y'
+        if not self.skipapproval:
+            answer = input('Please indicate approval: [y/n] ')
         if not answer or answer[0].lower() != 'y':
             print('You did not indicate approval')
             exit(1)
