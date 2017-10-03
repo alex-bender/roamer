@@ -36,7 +36,7 @@ class Session(object):
         print(engine.commands_to_str())
         answer = 'y'
         if not self.skipapproval:
-            answer = input('Please indicate approval: [y/n] ')
+            answer = input('Please indicate approval: [y/N] ')
         if not answer or answer[0].lower() != 'y':
             print('You did not indicate approval')
             exit(1)
