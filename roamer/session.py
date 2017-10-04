@@ -41,9 +41,14 @@ class Session(object):
                     'Argument --skip-approval could be used to run roamer '
                     'in a noninteractive mode.'
                 )
-                answer = input('Please indicate approval: [y/N] ')
-            if not answer or answer[0].lower() != 'y':
-                print('You did not indicate approval.')
-                exit(1)
+                try:
+                    answer = input('Please indicate approval: [y/N] ')
+                except KeyboardInterrupt:
+                    # Add line feed
+                    print()
+                    answer = None
+                if not answer or answer[0].lower() != 'y':
+                    print('You did not indicate approval.')
+                    exit(1)
         engine.run_commands()
         record.add_dir(Directory(self.cwd, os.listdir(self.cwd)))
