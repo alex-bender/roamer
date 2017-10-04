@@ -13,6 +13,6 @@ def start(argv):
         version = pkg_resources.require('roamer')[0].version
         print(version)
         return
-    if '--skipapproval' in argv:
+    if '--skip-approval' in argv:
         skipapproval = True
     Session(skipapproval=skipapproval).run()
