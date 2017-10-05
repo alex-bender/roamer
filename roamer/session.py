@@ -13,6 +13,11 @@ from roamer.engine import Engine
 from roamer import record
 from roamer.database import db_init
 
+try:
+    input = raw_input
+except NameError:
+    pass
+
 class Session(object):
     def __init__(self, cwd=None, skipapproval=True):
         self.cwd = cwd
@@ -34,21 +39,19 @@ class Session(object):
         engine = Engine(self.directory, self.edit_directory)
         engine.compile_commands()
         print(engine.commands_to_str())
-        if engine.commands:
-            answer = 'y'
-            if not self.skipapproval:
-                print(
-                    'Argument --skip-approval could be used to run roamer '
-                    'in a noninteractive mode.'
-                )
-                try:
-                    answer = input('Please indicate approval: [y/N] ')
-                except KeyboardInterrupt:
-                    # Add line feed
-                    print()
-                    answer = None
-                if not answer or answer[0].lower() != 'y':
-                    print('You did not indicate approval.')
-                    exit(1)
+        if engine.commands and not self.skipapproval:
+            print(
+                'Argument --skip-approval could be used to run roamer '
+                'in a noninteractive mode.'
+            )
+            try:
+                answer = input('Please indicate approval: [y/N] ')
+            except KeyboardInterrupt:
+                # Add line feed
+                print()
+                answer = None
+            if not answer or answer[0].lower() != 'y':
+                print('You did not indicate approval.')
+                exit(1)
         engine.run_commands()
         record.add_dir(Directory(self.cwd, os.listdir(self.cwd)))
