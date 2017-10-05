@@ -14,7 +14,7 @@ from roamer import record
 from roamer.database import db_init
 
 try:
-    input = raw_input
+    input = raw_input  # pylint: disable=invalid-name, redefined-builtin
 except NameError:
     pass
 
